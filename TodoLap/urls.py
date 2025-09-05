@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import include, path
 
+from inventario import views
 from usuarios.views import dashboard, login_view, logout_view
 
 urlpatterns = [
@@ -26,7 +27,8 @@ urlpatterns = [
     path('logout/', logout_view, name="logout"),
     path('dashboard/', dashboard, name="dashboard"),
     path("", lambda request: redirect("login")),
-    #path('inventario/', include('inventario.urls')),
-    #path('ventas/', include('ventas.urls')),
-    #path('servicios/', include('servicios.urls')),
+    path("inventario/", views.inventario_view, name="inventario"),
+    path("inventario/agregar/", views.agregar_producto, name="agregar_producto"),
+    path("inventario/modificar/", views.modificar_producto, name="modificar_producto"),
+    path("inventario/eliminar/", views.eliminar_producto, name="eliminar_producto"),
 ]
