@@ -137,10 +137,51 @@ python manage.py createsuperuser
 Sigue las instrucciones interactivas.
 
 ## Ejecutar el servidor de desarrollo
+
+### Opción 1: Servidor local normal
 ```bash
 python manage.py runserver
 ```
 Abre en el navegador: http://127.0.0.1:8000/
+
+### Opción 2: Con túnel de Cloudflare (acceso público)
+
+Si quieres compartir tu aplicación con otros o acceder desde internet:
+
+**Requisitos previos:**
+1. Instalar cloudflared:
+```powershell
+winget install --id Cloudflare.cloudflared
+```
+O descargarlo desde: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/
+
+**Iniciar con el script automático:**
+
+PowerShell:
+```powershell
+.\Scripts\start_cloudflare.ps1
+```
+
+O CMD:
+```cmd
+Scripts\start_cloudflare.bat
+```
+
+**Comando manual (sin script):**
+```powershell
+# Terminal 1: Iniciar Django
+python manage.py runserver 8000
+
+# Terminal 2: Iniciar túnel de Cloudflare
+cloudflared tunnel --url http://localhost:8000
+```
+
+El túnel te dará una URL pública (ejemplo: `https://random-name.trycloudflare.com`) que puedes compartir. 
+
+**Importante:** Agrega el dominio de Cloudflare a `ALLOWED_HOSTS` en `settings.py`:
+```python
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.trycloudflare.com']
+```
 
 ## Flujo de autenticación
 - La raíz redirige a `/login/`.

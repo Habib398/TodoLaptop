@@ -29,9 +29,9 @@
             <div class="collapse navbar-collapse" id="menu">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Inventario</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inventario' %}">Inventario</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Ventas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'servicios' %}">Servicios</a></li>
                     <li class="nav-item"><a class="nav-link text-warning fw-bold" href="{% url 'logout' %}">Salir</a></li>
                 </ul>
             </div>
@@ -65,7 +65,7 @@
                 <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/313115_ncoi0c" alt="Logo-ventas" width="120" class="mb-3">
                 <h5 class="card-title">Ventas</h5>
                 <p class="card-text text-muted">Registra y administra las ventas realizadas.</p>
-                <a href="#" class="btn btn-outline-success w-100">Ir a Ventas</a>
+                <a href="{% url 'ventas' %}" class="btn btn-outline-success w-100">Ir a Ventas</a>
             </div>
         </div>
     </div>
@@ -77,7 +77,7 @@
                 <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/9727444_q4mmuv" alt="Logo-servicios" width="120" class="mb-3">
                 <h5 class="card-title">Servicios</h5>
                 <p class="card-text text-muted">Control de mantenimientos y reparaciones.</p>
-                <a href="#" class="btn btn-outline-warning w-100">Ir a Servicios</a>
+                <a href="{% url 'servicios' %}" class="btn btn-outline-warning w-100">Ir a Servicios</a>
             </div>
         </div>
     </div>

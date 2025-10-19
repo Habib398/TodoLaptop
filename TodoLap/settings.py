@@ -8,7 +8,8 @@ SECRET_KEY = 'django-insecure-cambia-esta-clave-a-una-muy-segura'
 AUTH_USER_MODEL = 'usuarios.Usuario'
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Permite acceso local y desde túneles de Cloudflare
+ALLOWED_HOSTS = ['*']  # Permite todos los hosts (solo para desarrollo)
 
 # -------------------------
 # APLICACIONES INSTALADAS
@@ -36,6 +37,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Configuración para permitir iframes de Cloudflare (solo desarrollo)
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+
 ROOT_URLCONF = 'TodoLap.urls'
 
 TEMPLATES = [
@@ -55,20 +60,28 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'TodoLap.wsgi.application'
-# BASE DE DATOS - MYSQL
+# BASE DE DATOS - SQLITE (Temporal para desarrollo)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'TLP_Manager',
-        'USER': 'root',         # Usuario de MySQL
-        'PASSWORD': '12345678',         # Contraseña de MySQL
-        'HOST': '127.0.0.1',    # Servidor
-        'PORT': '3306',         # Puerto de MySQL
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# BASE DE DATOS - MYSQL (Configuración original comentada)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'TLP_Manager',
+#         'USER': 'root',         # Usuario de MySQL
+#         'PASSWORD': '12345678',         # Contraseña de MySQL
+#         'HOST': '127.0.0.1',    # Servidor
+#         'PORT': '3306',         # Puerto de MySQL
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#         }
+#     }
+# }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -84,6 +97,23 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Cuando uses un túnel (Cloudflare / ngrok) para una DEMO y hagas POST (login, formularios),
+# Django valida también el origen (origin) para CSRF. Debes añadir el dominio HTTPS completo
+# a CSRF_TRUSTED_ORIGINS. Para Cloudflare quick tunnel normalmente es algo como:
+#   https://<subdominio>.trycloudflare.com
+# Sustituye la cadena de ejemplo por la que te aparezca en la terminal.
+# Puedes dejar el comodín del dominio base para simplificar en una DEMO, pero NO en producción.
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.trycloudflare.com",  # Demo rápida Cloudflare Tunnel
+    # "https://<tu-subdominio>.ngrok-free.app",  # Descomenta si usas ngrok
+]
+
+# Configuraciones adicionales para túneles
+SESSION_COOKIE_SECURE = False  # Cambiar a True si usas HTTPS en producción
+CSRF_COOKIE_SECURE = False  # Cambiar a True si usas HTTPS en producción
+SESSION_COOKIE_SAMESITE = 'Lax'  # Permite cookies cross-site con cierta protección
+CSRF_COOKIE_SAMESITE = 'Lax'
 
 LANGUAGE_CODE = 'es-mx'
 
