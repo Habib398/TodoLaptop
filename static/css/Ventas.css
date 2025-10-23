@@ -1,0 +1,72 @@
+body {
+    background-color: #003D6C;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.logo-top {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+.btn-back {
+    position: absolute;
+    left: 20px;
+    top: 28px;
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-back:hover { background: rgba(255,255,255,0.09); color: #fff; }
+
+.titulo-principal {
+    text-align: center;
+    margin: 6px 0 26px 0;
+    font-weight: 600;
+    font-size: 1.8rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.opcion {
+    background: linear-gradient(135deg, #00B4FF 0%, #0095D9 100%);
+    border-radius: 14px;
+    padding: 28px 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.08);
+    height: 100%;
+}
+
+.opcion:hover {
+    border-color: rgba(255,255,255,0.3);
+}
+
+.opcion img {
+    width: 110px;
+    height: auto;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 3px 10px rgba(0,0,0,0.18));
+}
+
+.opcion h4 {
+    margin: 0;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.3px;
+}
+
+.opcion p {
+    margin-top: 8px;
+    color: rgba(255,255,255,0.88);
+    font-size: 0.85rem;
+}

@@ -5,47 +5,333 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cobrar Servicios - TodoLaptops</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { 
-            background-color: #003D6C; 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .container-venta { 
-            background: #f0f0f0; 
-            border-radius: 15px; 
-            padding: 30px; 
-            margin-top: 20px; 
-            color: black; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        .header-bar { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px;
-        }
-        .logo { height: 60px; }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/cobrar_servicios.css' %}">
 </head>
 <body>
     <div class="container mt-3">
         <div class="header-bar">
             <div>
                 <a href="{% url 'ventas' %}" class="btn btn-outline-light me-3">
-                    ← Volver a Ventas
+                    <i class="bi bi-arrow-left"></i> Volver a Ventas
                 </a>
-                <h2 class="d-inline">Cobrar Servicios</h2>
+                <h2 class="d-inline"><i class="bi bi-cash-coin"></i> Cobrar Servicios</h2>
             </div>
             <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/PNG__FTransparente_CH_cxwjlv" alt="Logo" class="logo" width="80">
         </div>
 
         <div class="container-venta">
-            <div class="alert alert-info">
-                <h4>En desarrollo</h4>
+            <!-- Mensajes de Django -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Switch entre Cotizados y Pagados -->
+            <div class="switch-container">
+                <ul class="nav nav-pills nav-fill">
+                    <li class="nav-item">
+                        <a class="nav-link {% if mostrar == 'cotizados' %}active{% endif %}" 
+                           href="?mostrar=cotizados{% if query %}&q={{ query }}{% endif %}">
+                            <i class="bi bi-clock-history"></i> Servicios Cotizados (Pendientes)
+                            {% if mostrar == 'cotizados' %}
+                                <span class="badge bg-light text-dark badge-count">{{ servicios.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if mostrar == 'pagados' %}active{% endif %}" 
+                           href="?mostrar=pagados{% if query %}&q={{ query }}{% endif %}">
+                            <i class="bi bi-check-circle"></i> Servicios Pagados (Historial)
+                            {% if mostrar == 'pagados' %}
+                                <span class="badge bg-light text-dark badge-count">{{ servicios.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
             </div>
+
+            <!-- Barra de Búsqueda -->
+            <div class="search-bar">
+                <form method="GET" action="{% url 'ventas_cobrar_servicios' %}">
+                    <input type="hidden" name="mostrar" value="{{ mostrar }}">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" 
+                               class="form-control" 
+                               name="q" 
+                               value="{{ query }}" 
+                               placeholder="Buscar por cliente o servicio...">
+                        <button class="btn btn-primary" type="submit">Buscar</button>
+                        {% if query %}
+                            <a href="?mostrar={{ mostrar }}" class="btn btn-secondary">Limpiar</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabla de Servicios Cotizados -->
+            <div class="table-responsive">
+                {% if servicios %}
+                    <table class="table table-servicios table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th>Servicio</th>
+                                <th>Técnico</th>
+                                <th>Precio Servicio</th>
+                                <th>Precio Productos</th>
+                                <th>Total</th>
+                                {% if mostrar == 'cotizados' %}
+                                    <th>Fecha Cotización</th>
+                                {% else %}
+                                    <th>Fecha Pago</th>
+                                {% endif %}
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for servicio in servicios %}
+                                <tr>
+                                    <td><strong>{{ servicio.id }}</strong></td>
+                                    <td>{{ servicio.nombre_cliente }}</td>
+                                    <td>{{ servicio.servicio.nombre }}</td>
+                                    <td>
+                                        {% if servicio.servicio.tecnico %}
+                                            {{ servicio.servicio.tecnico.get_full_name }}
+                                        {% else %}
+                                            <span class="text-muted">Sin asignar</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>${{ servicio.precio_servicio }}</td>
+                                    <td>${{ servicio.precio_productos }}</td>
+                                    <td><strong>${{ servicio.precio_total }}</strong></td>
+                                    <td>
+                                        {% if mostrar == 'cotizados' %}
+                                            {{ servicio.fecha_creacion|date:"d/m/Y H:i" }}
+                                        {% else %}
+                                            {{ servicio.fecha_pago|date:"d/m/Y H:i" }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if servicio.estado == 'cotizado' %}
+                                            <span class="badge badge-cotizado">{{ servicio.get_estado_display }}</span>
+                                        {% else %}
+                                            <span class="badge badge-pagado">{{ servicio.get_estado_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <button type="button" 
+                                                class="btn btn-sm btn-info me-1" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#detalleModal{{ servicio.id }}">
+                                            <i class="bi bi-eye"></i> Ver
+                                        </button>
+                                        {% if mostrar == 'cotizados' %}
+                                            <button type="button" 
+                                                    class="btn btn-sm btn-pagar" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#pagarModal{{ servicio.id }}">
+                                                <i class="bi bi-cash"></i> Pagar
+                                            </button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                                <!-- Modal de Detalle -->
+                                <div class="modal fade" id="detalleModal{{ servicio.id }}" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
+                                                    <i class="bi bi-info-circle"></i> Detalle de Cotización #{{ servicio.id }}
+                                                </h5>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <strong>Cliente:</strong>
+                                                        <p>{{ servicio.nombre_cliente }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <strong>Estado:</strong>
+                                                        <p>
+                                                            {% if servicio.estado == 'cotizado' %}
+                                                                <span class="badge badge-cotizado">{{ servicio.get_estado_display }}</span>
+                                                            {% else %}
+                                                                <span class="badge badge-pagado">{{ servicio.get_estado_display }}</span>
+                                                            {% endif %}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <strong>Fecha de Cotización:</strong>
+                                                        <p>{{ servicio.fecha_creacion|date:"d/m/Y H:i" }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        {% if servicio.fecha_pago %}
+                                                            <strong>Fecha de Pago:</strong>
+                                                            <p>{{ servicio.fecha_pago|date:"d/m/Y H:i" }}</p>
+                                                        {% else %}
+                                                            <strong>Estado:</strong>
+                                                            <p><span class="badge badge-cotizado">Pendiente de pago</span></p>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <strong>Servicio:</strong>
+                                                        <p>{{ servicio.servicio.nombre }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <strong>Técnico Asignado:</strong>
+                                                        <p>
+                                                            {% if servicio.servicio.tecnico %}
+                                                                {{ servicio.servicio.tecnico.get_full_name }}
+                                                            {% else %}
+                                                                <span class="text-muted">Sin asignar</span>
+                                                            {% endif %}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <strong>Descripción del Servicio:</strong>
+                                                    <p class="text-muted">{{ servicio.servicio.descripcion }}</p>
+                                                </div>
+
+                                                <!-- Productos Utilizados -->
+                                                {% if servicio.productos_utilizados.all %}
+                                                    <div class="mb-3">
+                                                        <strong>Productos Utilizados:</strong>
+                                                        {% for producto_servicio in servicio.productos_utilizados.all %}
+                                                            <div class="detalle-item">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span>{{ producto_servicio.producto.nombre }}</span>
+                                                                    <span>{{ producto_servicio.cantidad }} x ${{ producto_servicio.precio_unitario }} = ${{ producto_servicio.subtotal }}</span>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+
+                                                <hr>
+                                                
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <strong>Precio del Servicio:</strong>
+                                                        <p>${{ servicio.precio_servicio }}</p>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <strong>Precio de Productos:</strong>
+                                                        <p>${{ servicio.precio_productos }}</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="text-center mt-3">
+                                                    <strong>TOTAL A PAGAR:</strong>
+                                                    <div class="total-destacado">${{ servicio.precio_total }}</div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal de Confirmación de Pago (solo para cotizados) -->
+                                {% if mostrar == 'cotizados' %}
+                                    <div class="modal fade" id="pagarModal{{ servicio.id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">
+                                                        <i class="bi bi-cash-stack"></i> Confirmar Pago
+                                                    </h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="alert alert-info">
+                                                        <i class="bi bi-info-circle"></i> 
+                                                        Está a punto de registrar el pago de este servicio.
+                                                    </div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <strong>Cliente:</strong> {{ servicio.nombre_cliente }}
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <strong>Servicio:</strong> {{ servicio.servicio.nombre }}
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <strong>Método de Pago:</strong> <span class="badge bg-success">Efectivo</span>
+                                                    </div>
+                                                    
+                                                    <div class="text-center mt-4 mb-3">
+                                                        <strong>Total a Pagar:</strong>
+                                                        <div class="total-destacado">${{ servicio.precio_total }}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                    <form method="POST" action="{% url 'pagar_servicio' servicio.id %}" style="display: inline;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-success btn-lg">
+                                                            <i class="bi bi-check-circle"></i> Confirmar Pago
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <!-- Estado Vacío -->
+                    <div class="empty-state">
+                        <i class="bi bi-inbox"></i>
+                        {% if mostrar == 'cotizados' %}
+                            <h4>No hay servicios cotizados pendientes de pago</h4>
+                            <p>Los servicios cotizados aparecerán aquí para ser cobrados.</p>
+                        {% else %}
+                            <h4>No hay servicios pagados</h4>
+                            <p>El historial de servicios pagados aparecerá aquí.</p>
+                        {% endif %}
+                        {% if query %}
+                            <p class="text-muted">No se encontraron resultados para "{{ query }}"</p>
+                            <a href="?mostrar={{ mostrar }}" class="btn btn-primary">Ver todos</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if servicios %}
+                <div class="mt-3 text-muted">
+                    <i class="bi bi-info-circle"></i> 
+                    {% if mostrar == 'cotizados' %}
+                        Total de cotizaciones pendientes: <strong>{{ servicios.count }}</strong>
+                    {% else %}
+                        Total de servicios pagados: <strong>{{ servicios.count }}</strong>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'JavaScript/cobrar_servicio.js' %}"></script>
 </body>
 </html>

@@ -3,7 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.db import transaction
+from django.utils import timezone
 from inventario.models import Producto
+from servicios.models import ServicioPagado
 from .models import Venta, DetalleVenta
 import json
 
@@ -101,4 +103,52 @@ def buscar_producto(request):
 @login_required
 def cobrar_servicios(request):
     """Vista para cobrar servicios (ServicioPagado)."""
-    return render(request, 'ventas/cobrar_servicios.html')
+    # Obtener el filtro de estado (cotizado o pagado)
+    mostrar = request.GET.get('mostrar', 'cotizados')  # 'cotizados' o 'pagados'
+    query = request.GET.get('q', '')
+    
+    # Filtrar según el estado seleccionado
+    if mostrar == 'pagados':
+        servicios = ServicioPagado.objects.filter(estado='pagado').select_related('servicio').order_by('-fecha_pago')
+    else:
+        servicios = ServicioPagado.objects.filter(estado='cotizado').select_related('servicio').order_by('-fecha_creacion')
+    
+    # Filtrar por búsqueda si existe
+    if query:
+        servicios = servicios.filter(
+            nombre_cliente__icontains=query
+        ) | servicios.filter(
+            servicio__nombre__icontains=query
+        )
+    
+    context = {
+        'servicios': servicios,
+        'query': query,
+        'mostrar': mostrar
+    }
+    
+    return render(request, 'ventas/cobrar_servicios.html', context)
+
+
+@login_required
+def pagar_servicio(request, servicio_id):
+    """Vista para procesar el pago de un servicio cotizado."""
+    if request.method == 'POST':
+        try:
+            with transaction.atomic():
+                # Obtener el servicio cotizado
+                servicio_pagado = get_object_or_404(ServicioPagado, id=servicio_id, estado='cotizado')
+                
+                # Actualizar el estado a pagado
+                servicio_pagado.estado = 'pagado'
+                servicio_pagado.fecha_pago = timezone.now()
+                servicio_pagado.save()
+                
+                messages.success(request, f'Servicio "{servicio_pagado.servicio.nombre}" pagado exitosamente. Total: ${servicio_pagado.precio_total:.2f}')
+                return redirect('ventas_cobrar_servicios')
+                
+        except Exception as e:
+            messages.error(request, f'Error al procesar el pago: {str(e)}')
+            return redirect('ventas_cobrar_servicios')
+    
+    return redirect('ventas_cobrar_servicios')

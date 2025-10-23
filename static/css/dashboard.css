@@ -1,0 +1,13 @@
+body {
+    background-color: #003D6C;
+}
+
+.card {
+    background-color: #00D5FF;
+}
+
+.bienvenida,
+.card-title,
+.card-text {
+    color: #fff !important;
+}

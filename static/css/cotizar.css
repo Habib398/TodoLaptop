@@ -1,0 +1,86 @@
+body {
+    background-color: #003366;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.container-cotizar {
+    background: #f0f0f0;
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 20px;
+    color: black;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.logo { height: 60px; }
+.servicio-info {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+}
+.productos-section {
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+.producto-item {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+.producto-item:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.resumen-precios {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+}
+.btn-cotizar {
+    background: linear-gradient(135deg, #ffc107, #ff8c00);
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    color: #000;
+}
+.btn-cotizar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255,193,7,0.4);
+    color: #000;
+}
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+.cantidad-input {
+    width: 80px;
+    text-align: center;
+}
+.precio-display {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 1.1em;
+}

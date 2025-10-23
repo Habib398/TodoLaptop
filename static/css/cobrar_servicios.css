@@ -1,0 +1,245 @@
+body {
+    background-color: #003D6C;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container-venta {
+    background: #f0f0f0;
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 20px;
+    color: black;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo { height: 60px; }
+
+.search-bar {
+    margin-bottom: 25px;
+}
+
+/* Personalización del botón de búsqueda */
+.search-bar .btn-primary {
+    background-color: #00B4FF;
+    border-color: #00B4FF;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.search-bar .btn-primary:hover {
+    background-color: #0099DD;
+    border-color: #0099DD;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 180, 255, 0.3);
+}
+
+.search-bar .btn-primary:active,
+.search-bar .btn-primary:focus {
+    background-color: #0088CC !important;
+    border-color: #0088CC !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 180, 255, 0.25) !important;
+}
+
+.search-bar .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    transition: all 0.3s;
+}
+
+.search-bar .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.table-servicios {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-servicios thead {
+    background: #00B4FF;
+    color: white;
+}
+
+.table-servicios tbody tr:hover {
+    background-color: rgba(0, 180, 255, 0.05);
+}
+
+.badge-cotizado {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.badge-pagado {
+    background-color: #28a745;
+    color: white;
+}
+
+.switch-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-pills .nav-link {
+    color: #003D6C;
+    font-weight: 500;
+    padding: 10px 30px;
+    border-radius: 25px;
+    transition: all 0.3s;
+}
+
+.nav-pills .nav-link:hover {
+    background-color: #e9ecef;
+    color: #00B4FF;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #00B4FF;
+    color: white;
+}
+
+.badge-count {
+    font-size: 0.85rem;
+    margin-left: 5px;
+}
+
+/* Botón Ver (info) */
+.btn-info {
+    background-color: #00B4FF;
+    border-color: #00B4FF;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #0099DD;
+    border-color: #0099DD;
+    color: white;
+}
+
+.btn-pagar {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.btn-pagar:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.servicio-card {
+    border-left: 4px solid #00B4FF;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+}
+
+.servicio-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 180, 255, 0.2);
+}
+
+.modal-header {
+    background-color: #00B4FF;
+    color: white;
+}
+
+.detalle-item {
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    transition: background-color 0.3s;
+}
+
+.detalle-item:hover {
+    background: #e9ecef;
+}
+
+.total-destacado {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+/* Estilos adicionales para consistencia */
+.input-group-text {
+    background-color: #00B4FF;
+    color: white;
+    border-color: #00B4FF;
+}
+
+.form-control:focus {
+    border-color: #00B4FF;
+    box-shadow: 0 0 0 0.2rem rgba(0, 180, 255, 0.25);
+}
+
+/* Mejorar el aspecto de los badges en la tabla */
+.badge {
+    padding: 6px 12px;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+/* Animación suave para las transiciones */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+button, a {
+    transition: all 0.3s ease;
+}
+
+/* Mejorar el hover de los botones de acción */
+.table-servicios tbody td button {
+    transition: all 0.2s ease;
+}
+
+.table-servicios tbody td button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Personalizar el scroll de la tabla */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #00B4FF;
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #0099DD;
+}
