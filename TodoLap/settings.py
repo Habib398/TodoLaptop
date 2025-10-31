@@ -60,13 +60,26 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'TodoLap.wsgi.application'
-# BASE DE DATOS - SQLITE (Temporal para desarrollo)
+
+# BASE DE DATOS - POSTGRESQL (Producción)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'TodoLaptop',
+        'USER': 'postgres',
+        'PASSWORD': '12345678',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+# BASE DE DATOS - SQLITE (Configuración anterior comentada)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 # BASE DE DATOS - MYSQL (Configuración original comentada)
 # DATABASES = {

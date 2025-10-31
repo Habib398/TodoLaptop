@@ -4,7 +4,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from inventario import views
-from usuarios.views import dashboard, login_view, logout_view
+from usuarios.views import dashboard, login_view, logout_view, agregar_usuario, listar_usuarios, editar_usuario, cambiar_estado_usuario, eliminar_usuario
 from servicios.views import servicios_view, agregar_servicio, modificar_servicio, eliminar_servicio, cotizar_servicio, obtener_producto_info
 
 urlpatterns = [
@@ -14,6 +14,13 @@ urlpatterns = [
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     path("dashboard/", dashboard, name="dashboard"),
+    
+    # Gestión de usuarios (solo admin)
+    path("usuarios/agregar/", agregar_usuario, name="agregar_usuario"),
+    path("usuarios/listar/", listar_usuarios, name="listar_usuarios"),
+    path("usuarios/editar/<int:pk>/", editar_usuario, name="editar_usuario"),
+    path("usuarios/estado/<int:pk>/", cambiar_estado_usuario, name="cambiar_estado_usuario"),
+    path("usuarios/eliminar/<int:pk>/", eliminar_usuario, name="eliminar_usuario"),
 
     # Redirección raíz -> login
     path("", lambda request: redirect("login")),
