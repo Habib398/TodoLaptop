@@ -1,0 +1,70 @@
+# Python
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+__pycache__/
+*.pyc
+.Python
+
+# Entorno Virtual
+venv/
+env/
+ENV/
+.venv
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+
+# Base de Datos
+*.sql
+*.sqlite
+*.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Configuración Local
+.env
+.env.local
+*.env
+
+# Fixtures (descomentar si NO quieres subir datos)
+# fixtures/*.json
+
+# Migraciones (mantener las iniciales)
+# */migrations/*
+# !*/migrations/__init__.py
+# !*/migrations/0001_initial.py
+
+# Archivos temporales
+*.bak
+*.tmp
+temp/
+tmp/
+
+# Logs y cache
+*.log
+logs/
+*.cache
+
+# Archivos de Windows
+Thumbs.db
+Desktop.ini
+
+# Respaldos
+*.backup
+backups/

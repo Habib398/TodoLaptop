@@ -1,12 +1,13 @@
 import os
 from pathlib import Path
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # CONFIGURACIÓN BÁSICA
-SECRET_KEY = 'django-insecure-cambia-esta-clave-a-una-muy-segura'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-cambia-esta-clave-a-una-muy-segura')
 AUTH_USER_MODEL = 'usuarios.Usuario'
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 # Permite acceso local y desde túneles de Cloudflare
 ALLOWED_HOSTS = ['*']  # Permite todos los hosts (solo para desarrollo)
@@ -61,15 +62,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TodoLap.wsgi.application'
 
-# BASE DE DATOS - POSTGRESQL (Producción)
+# BASE DE DATOS - POSTGRESQL
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'TodoLaptop',
-        'USER': 'postgres',
-        'PASSWORD': '12345678',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': config('DB_ENGINE', default='django.db.backends.postgresql'),
+        'NAME': config('DB_NAME', default='TodoLaptop'),
+        'USER': config('DB_USER', default='postgres'),
+        'PASSWORD': config('DB_PASSWORD', default='12345678'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default='5432'),
     }
 }
 
@@ -123,8 +124,8 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Configuraciones adicionales para túneles
-SESSION_COOKIE_SECURE = False  # Cambiar a True si usas HTTPS en producción
-CSRF_COOKIE_SECURE = False  # Cambiar a True si usas HTTPS en producción
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=False, cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 SESSION_COOKIE_SAMESITE = 'Lax'  # Permite cookies cross-site con cierta protección
 CSRF_COOKIE_SAMESITE = 'Lax'
 

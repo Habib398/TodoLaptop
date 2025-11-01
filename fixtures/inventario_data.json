@@ -1,0 +1,62 @@
+[
+{
+  "model": "inventario.producto",
+  "pk": 1,
+  "fields": {
+    "nombre": "teclado razer",
+    "descripcion": "teclado gamer retro iluminado",
+    "precio": "900.00",
+    "cantidad_stock": 2
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 2,
+  "fields": {
+    "nombre": "mouse gamer logitec",
+    "descripcion": "mouse gamer logitec",
+    "precio": "650.00",
+    "cantidad_stock": 3
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 3,
+  "fields": {
+    "nombre": "bateria HS04",
+    "descripcion": "bateria HS04 para laptop hp",
+    "precio": "650.00",
+    "cantidad_stock": 2
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 4,
+  "fields": {
+    "nombre": "Pantalla 15.6 40 pin",
+    "descripcion": "pantalla led 15.6 40 pines",
+    "precio": "1300.00",
+    "cantidad_stock": 1
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 5,
+  "fields": {
+    "nombre": "bateria CQ42",
+    "descripcion": "BATERIA HP CQ42",
+    "precio": "650.00",
+    "cantidad_stock": 1
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 6,
+  "fields": {
+    "nombre": "adaptador Tipo C HDM1",
+    "descripcion": "ADAPTADOR TIPO C CON HDMI",
+    "precio": "350.00",
+    "cantidad_stock": 2
+  }
+}
+]

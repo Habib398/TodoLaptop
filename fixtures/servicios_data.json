@@ -1,0 +1,190 @@
+[
+{
+  "model": "servicios.servicio",
+  "pk": 1,
+  "fields": {
+    "nombre": "mantenimiento",
+    "tecnico": null,
+    "descripcion": "limpieza interna y cambio de pasta termica",
+    "costo": "500.00",
+    "fecha": "2025-10-01T00:17:07.126Z",
+    "productos": []
+  }
+},
+{
+  "model": "servicios.servicio",
+  "pk": 2,
+  "fields": {
+    "nombre": "instalacion de office",
+    "tecnico": null,
+    "descripcion": "paquetería office (Word,Excel,PowerPoint",
+    "costo": "400.00",
+    "fecha": "2025-10-12T03:32:23.061Z",
+    "productos": []
+  }
+},
+{
+  "model": "servicios.servicio",
+  "pk": 3,
+  "fields": {
+    "nombre": "instalacion autocad 2024",
+    "tecnico": null,
+    "descripcion": "programa AutoCAD versión 2024",
+    "costo": "600.00",
+    "fecha": "2025-10-12T03:33:06.642Z",
+    "productos": []
+  }
+},
+{
+  "model": "servicios.servicio",
+  "pk": 5,
+  "fields": {
+    "nombre": "instalación de pantalla para laptop",
+    "tecnico": null,
+    "descripcion": "cambio y instalación de pantalla de laptop ",
+    "costo": "600.00",
+    "fecha": "2025-10-12T03:35:36.355Z",
+    "productos": []
+  }
+},
+{
+  "model": "servicios.serviciopagado",
+  "pk": 1,
+  "fields": {
+    "servicio": 1,
+    "nombre_cliente": "pablo",
+    "precio_servicio": "250.00",
+    "precio_productos": "7200.00",
+    "precio_total": "7450.00",
+    "estado": "pagado",
+    "fecha_creacion": "2025-10-01T00:17:44.570Z",
+    "fecha_pago": "2025-10-19T02:24:34.814Z"
+  }
+},
+{
+  "model": "servicios.serviciopagado",
+  "pk": 2,
+  "fields": {
+    "servicio": 1,
+    "nombre_cliente": "misael",
+    "precio_servicio": "250.00",
+    "precio_productos": "0.00",
+    "precio_total": "250.00",
+    "estado": "pagado",
+    "fecha_creacion": "2025-10-07T18:48:27.054Z",
+    "fecha_pago": "2025-10-19T01:42:24.416Z"
+  }
+},
+{
+  "model": "servicios.serviciopagado",
+  "pk": 3,
+  "fields": {
+    "servicio": 5,
+    "nombre_cliente": "PANCHO",
+    "precio_servicio": "600.00",
+    "precio_productos": "1300.00",
+    "precio_total": "1900.00",
+    "estado": "cotizado",
+    "fecha_creacion": "2025-10-12T03:41:10.692Z",
+    "fecha_pago": null
+  }
+},
+{
+  "model": "servicios.serviciopagado",
+  "pk": 4,
+  "fields": {
+    "servicio": 5,
+    "nombre_cliente": "juan",
+    "precio_servicio": "600.00",
+    "precio_productos": "650.00",
+    "precio_total": "1250.00",
+    "estado": "cotizado",
+    "fecha_creacion": "2025-10-31T03:11:31.027Z",
+    "fecha_pago": null
+  }
+},
+{
+  "model": "servicios.serviciopagado",
+  "pk": 5,
+  "fields": {
+    "servicio": 3,
+    "nombre_cliente": "DIEGO",
+    "precio_servicio": "600.00",
+    "precio_productos": "2950.00",
+    "precio_total": "3550.00",
+    "estado": "pagado",
+    "fecha_creacion": "2025-10-31T03:17:31.661Z",
+    "fecha_pago": "2025-10-31T03:18:18.434Z"
+  }
+},
+{
+  "model": "servicios.productoserviciopagado",
+  "pk": 1,
+  "fields": {
+    "servicio_pagado": 1,
+    "producto": 1,
+    "cantidad": 1,
+    "precio_unitario": "7200.00"
+  }
+},
+{
+  "model": "servicios.productoserviciopagado",
+  "pk": 2,
+  "fields": {
+    "servicio_pagado": 3,
+    "producto": 4,
+    "cantidad": 1,
+    "precio_unitario": "1300.00"
+  }
+},
+{
+  "model": "servicios.productoserviciopagado",
+  "pk": 3,
+  "fields": {
+    "servicio_pagado": 4,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "650.00"
+  }
+},
+{
+  "model": "servicios.productoserviciopagado",
+  "pk": 4,
+  "fields": {
+    "servicio_pagado": 5,
+    "producto": 6,
+    "cantidad": 1,
+    "precio_unitario": "350.00"
+  }
+},
+{
+  "model": "servicios.productoserviciopagado",
+  "pk": 5,
+  "fields": {
+    "servicio_pagado": 5,
+    "producto": 5,
+    "cantidad": 1,
+    "precio_unitario": "650.00"
+  }
+},
+{
+  "model": "servicios.productoserviciopagado",
+  "pk": 6,
+  "fields": {
+    "servicio_pagado": 5,
+    "producto": 2,
+    "cantidad": 1,
+    "precio_unitario": "650.00"
+  }
+},
+{
+  "model": "servicios.productoserviciopagado",
+  "pk": 7,
+  "fields": {
+    "servicio_pagado": 5,
+    "producto": 4,
+    "cantidad": 1,
+    "precio_unitario": "1300.00"
+  }
+}
+]

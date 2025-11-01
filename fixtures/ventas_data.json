@@ -1,0 +1,182 @@
+[
+{
+  "model": "ventas.venta",
+  "pk": 1,
+  "fields": {
+    "usuario": 1,
+    "fecha": "2025-10-12T01:17:13.110Z",
+    "total": "1554.00",
+    "metodo_pago": "efectivo"
+  }
+},
+{
+  "model": "ventas.venta",
+  "pk": 2,
+  "fields": {
+    "usuario": 1,
+    "fecha": "2025-10-12T01:41:34.969Z",
+    "total": "7200.00",
+    "metodo_pago": "efectivo"
+  }
+},
+{
+  "model": "ventas.venta",
+  "pk": 3,
+  "fields": {
+    "usuario": 1,
+    "fecha": "2025-10-12T03:29:36.822Z",
+    "total": "650.00",
+    "metodo_pago": "efectivo"
+  }
+},
+{
+  "model": "ventas.venta",
+  "pk": 4,
+  "fields": {
+    "usuario": 1,
+    "fecha": "2025-10-12T03:30:11.072Z",
+    "total": "1300.00",
+    "metodo_pago": "efectivo"
+  }
+},
+{
+  "model": "ventas.venta",
+  "pk": 5,
+  "fields": {
+    "usuario": 1,
+    "fecha": "2025-10-12T03:40:26.306Z",
+    "total": "2600.00",
+    "metodo_pago": "efectivo"
+  }
+},
+{
+  "model": "ventas.venta",
+  "pk": 6,
+  "fields": {
+    "usuario": 1,
+    "fecha": "2025-10-18T18:25:27.280Z",
+    "total": "1950.00",
+    "metodo_pago": "efectivo"
+  }
+},
+{
+  "model": "ventas.venta",
+  "pk": 7,
+  "fields": {
+    "usuario": 1,
+    "fecha": "2025-10-18T18:38:39.181Z",
+    "total": "1050.00",
+    "metodo_pago": "efectivo"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 1,
+  "fields": {
+    "venta": 1,
+    "producto": 2,
+    "cantidad": 2,
+    "precio_unitario": "777.00",
+    "subtotal": "1554.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 2,
+  "fields": {
+    "venta": 2,
+    "producto": 1,
+    "cantidad": 1,
+    "precio_unitario": "7200.00",
+    "subtotal": "7200.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 3,
+  "fields": {
+    "venta": 3,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "650.00",
+    "subtotal": "650.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 4,
+  "fields": {
+    "venta": 4,
+    "producto": 3,
+    "cantidad": 2,
+    "precio_unitario": "650.00",
+    "subtotal": "1300.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 5,
+  "fields": {
+    "venta": 5,
+    "producto": 4,
+    "cantidad": 1,
+    "precio_unitario": "1300.00",
+    "subtotal": "1300.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 6,
+  "fields": {
+    "venta": 5,
+    "producto": 5,
+    "cantidad": 1,
+    "precio_unitario": "650.00",
+    "subtotal": "650.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 7,
+  "fields": {
+    "venta": 5,
+    "producto": 3,
+    "cantidad": 1,
+    "precio_unitario": "650.00",
+    "subtotal": "650.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 8,
+  "fields": {
+    "venta": 6,
+    "producto": 4,
+    "cantidad": 1,
+    "precio_unitario": "1300.00",
+    "subtotal": "1300.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 9,
+  "fields": {
+    "venta": 6,
+    "producto": 5,
+    "cantidad": 1,
+    "precio_unitario": "650.00",
+    "subtotal": "650.00"
+  }
+},
+{
+  "model": "ventas.detalleventa",
+  "pk": 10,
+  "fields": {
+    "venta": 7,
+    "producto": 6,
+    "cantidad": 3,
+    "precio_unitario": "350.00",
+    "subtotal": "1050.00"
+  }
+}
+]
