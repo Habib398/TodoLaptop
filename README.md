@@ -49,6 +49,9 @@
 
 ---
 
+## NOTA IMPORTANTE
+Ejecutar el siguiente comando antes de ejecutar un script: Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
 ## PASO 2: Instalación Automática (1 comando)
 
 1. Abrir PowerShell en la carpeta del proyecto
