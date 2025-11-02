@@ -34,6 +34,10 @@ if (Test-Path "venv\Scripts\Activate.ps1") {
 Write-Host "[1/4] Exportando datos de usuarios..." -ForegroundColor Yellow
 python manage.py dumpdata usuarios --indent 2 --output "fixtures/usuarios_data.json"
 if ($LASTEXITCODE -eq 0) {
+    # Convertir a UTF-8 sin BOM
+    $content = [System.IO.File]::ReadAllText("fixtures/usuarios_data.json", [System.Text.Encoding]::UTF8)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText("fixtures/usuarios_data.json", $content, $utf8NoBom)
     Write-Host "      [OK] Datos de usuarios exportados" -ForegroundColor Green
 }
 
@@ -41,6 +45,10 @@ Write-Host ""
 Write-Host "[2/4] Exportando datos de inventario..." -ForegroundColor Yellow
 python manage.py dumpdata inventario --indent 2 --output "fixtures/inventario_data.json"
 if ($LASTEXITCODE -eq 0) {
+    # Convertir a UTF-8 sin BOM
+    $content = [System.IO.File]::ReadAllText("fixtures/inventario_data.json", [System.Text.Encoding]::UTF8)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText("fixtures/inventario_data.json", $content, $utf8NoBom)
     Write-Host "      [OK] Datos de inventario exportados" -ForegroundColor Green
 }
 
@@ -48,6 +56,10 @@ Write-Host ""
 Write-Host "[3/4] Exportando datos de ventas..." -ForegroundColor Yellow
 python manage.py dumpdata ventas --indent 2 --output "fixtures/ventas_data.json"
 if ($LASTEXITCODE -eq 0) {
+    # Convertir a UTF-8 sin BOM
+    $content = [System.IO.File]::ReadAllText("fixtures/ventas_data.json", [System.Text.Encoding]::UTF8)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText("fixtures/ventas_data.json", $content, $utf8NoBom)
     Write-Host "      [OK] Datos de ventas exportados" -ForegroundColor Green
 }
 
@@ -55,7 +67,11 @@ Write-Host ""
 Write-Host "[4/4] Exportando datos de servicios..." -ForegroundColor Yellow
 python manage.py dumpdata servicios --indent 2 --output "fixtures/servicios_data.json"
 if ($LASTEXITCODE -eq 0) {
-Write-Host "      [OK] Datos de servicios exportados" -ForegroundColor Green
+    # Convertir a UTF-8 sin BOM
+    $content = [System.IO.File]::ReadAllText("fixtures/servicios_data.json", [System.Text.Encoding]::UTF8)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText("fixtures/servicios_data.json", $content, $utf8NoBom)
+    Write-Host "      [OK] Datos de servicios exportados" -ForegroundColor Green
 }
 
 Write-Host ""

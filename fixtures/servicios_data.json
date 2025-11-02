@@ -17,7 +17,7 @@
   "fields": {
     "nombre": "instalacion de office",
     "tecnico": null,
-    "descripcion": "paquetería office (Word,Excel,PowerPoint",
+    "descripcion": "paqueterï¿½a office (Word,Excel,PowerPoint",
     "costo": "400.00",
     "fecha": "2025-10-12T03:32:23.061Z",
     "productos": []
@@ -29,7 +29,7 @@
   "fields": {
     "nombre": "instalacion autocad 2024",
     "tecnico": null,
-    "descripcion": "programa AutoCAD versión 2024",
+    "descripcion": "programa AutoCAD versiï¿½n 2024",
     "costo": "600.00",
     "fecha": "2025-10-12T03:33:06.642Z",
     "productos": []
@@ -39,9 +39,9 @@
   "model": "servicios.servicio",
   "pk": 5,
   "fields": {
-    "nombre": "instalación de pantalla para laptop",
+    "nombre": "instalaciï¿½n de pantalla para laptop",
     "tecnico": null,
-    "descripcion": "cambio y instalación de pantalla de laptop ",
+    "descripcion": "cambio y instalaciï¿½n de pantalla de laptop ",
     "costo": "600.00",
     "fecha": "2025-10-12T03:35:36.355Z",
     "productos": []
