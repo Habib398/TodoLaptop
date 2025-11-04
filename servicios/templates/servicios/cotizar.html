@@ -1,11 +1,50 @@
-<!DOCTYPE html>
-<html lang="es">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
+<!--
+    PLANTILLA: cotizar.html
+    PROPÓSITO: Formulario para generar cotizaciones de servicios
+    
+    FUNCIONALIDADES:
+    - Mostrar información del servicio seleccionado
+    - Ingresar datos del cliente
+    - Agregar productos del inventario al servicio (opcional)
+    - Cálculo automático de totales en tiempo real
+    - Generar cotización (estado: 'cotizado')
+    
+    <div class="container mt-3">
+        <!-- ============ ENCABEZADO CON NAVEGACIÓN ============ -->
+        <div class="header-bar">
+            <div>
+                <!-- Botón para regresar al listado de servicios -->
+                <a href="{% url 'servicios' %}" class="btn btn-outline-light me-3">
+                    ← Volver a Servicios
+                </a>
+                <h2 class="d-inline">Cotizar Servicio</h2>
+            </div>
+            <!-- Logo de la empresa desde Cloudinary -->
+            <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/PNG__FTransparente_CH_cxwjlv" alt="Logo" class="logo" width="80">
+        </div>
+
+        <div class="container-cotizar">
+            <!-- ============ INFORMACIÓN DEL SERVICIO ============ -->
+            <!-- Tarjeta que muestra los detalles del servicio seleccionado -->
+            <div class="servicio-info">
+                <h4><i class="bi bi-gear-fill"></i> {{ servicio.nombre }}</h4>
+                <p class="mb-2">{{ servicio.descripcion }}</p>
+                <!-- Precio base del servicio -->
+                <h5 class="mb-0">Precio base: <span class="fw-bold">${{ servicio.costo|floatformat:2 }}</span></h5>
+            </div>
+
+            <!-- ============ FORMULARIO PRINCIPAL ============ -->
+            <form method="POST" id="formCotizar">
+                {% csrf_token %}
+                <!-- Campo oculto que almacena los productos en formato JSON -->
+                <!-- JavaScript lo llena antes de enviar el formulario -->
+                <input type="hidden" id="productos_json" name="productos_json" value="[]">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Título dinámico con nombre del servicio -->
     <title>Cotizar Servicio - {{ servicio.nombre }}</title>
+    <!-- Framework Bootstrap para estilos responsivos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos personalizados del módulo cotización -->
     <link href="{% static 'css/cotizar.css' %}" rel="stylesheet">
 </head>
 <body>
@@ -25,34 +64,31 @@
             <div class="servicio-info">
                 <h4><i class="bi bi-gear-fill"></i> {{ servicio.nombre }}</h4>
                 <p class="mb-2">{{ servicio.descripcion }}</p>
-                <h5 class="mb-0">Precio base: <span class="fw-bold">${{ servicio.costo|floatformat:2 }}</span></h5>
-            </div>
-
-            <!-- Formulario principal -->
-            <form method="POST" id="formCotizar">
-                {% csrf_token %}
-                <input type="hidden" id="productos_json" name="productos_json" value="[]">
                 
-                <!-- Datos del cliente -->
+                <!-- ============ DATOS DEL CLIENTE ============ -->
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label for="nombre_cliente" class="form-label fw-bold">
                             <i class="bi bi-person-fill"></i> Nombre del Cliente *
                         </label>
+                        <!-- Campo obligatorio para identificar al cliente -->
                         <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" required 
                                placeholder="Ingrese el nombre completo del cliente">
                     </div>
                 </div>
 
-                <!-- Sección de productos -->
+                <!-- ============ SECCIÓN DE PRODUCTOS ============ -->
                 <div class="productos-section">
                     <h5 class="mb-3">
                         <i class="bi bi-box-seam"></i> Productos a Utilizar
                         <small class="text-muted">(Opcional)</small>
                     </h5>
                     
+                    <!-- Selector de productos -->
                     <div class="row mb-3">
                         <div class="col-md-8">
+                            <!-- Dropdown con productos disponibles (solo con stock > 0) -->
+                            <!-- data-* atributos: información del producto para JavaScript -->
                             <select class="form-select" id="select_producto">
                                 <option value="">Seleccionar producto...</option>
                                 {% for producto in productos %}
@@ -66,42 +102,44 @@
                             </select>
                         </div>
                         <div class="col-md-2">
+                            <!-- Campo para especificar cantidad del producto -->
                             <input type="number" class="form-control cantidad-input" id="cantidad_producto" 
                                    min="1" value="1" placeholder="Cant.">
                         </div>
                         <div class="col-md-2">
+                            <!-- Botón para agregar el producto seleccionado a la lista -->
                             <button type="button" class="btn btn-success w-100" id="btn_agregar_producto">
                                 <i class="bi bi-plus-circle"></i> Agregar
                             </button>
                         </div>
                     </div>
 
-                    <!-- Lista de productos agregados -->
-                    <div id="productos_agregados">
-                        <p class="text-muted text-center">No hay productos agregados</p>
-                    </div>
-                </div>
-
-                <!-- Resumen de precios -->
+                <!-- ============ RESUMEN DE PRECIOS ============ -->
+                <!-- Tarjeta que muestra el desglose de la cotización -->
+                <!-- Los valores se actualizan dinámicamente con JavaScript -->
                 <div class="resumen-precios">
                     <h5 class="mb-3"><i class="bi bi-calculator"></i> Resumen de Cotización</h5>
                     <div class="row">
                         <div class="col-md-8">
+                            <!-- Precio base del servicio (fijo) -->
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Precio del servicio:</span>
                                 <span class="fw-bold" id="precio_servicio">${{ servicio.costo|floatformat:2 }}</span>
                             </div>
+                            <!-- Suma de productos agregados (dinámico) -->
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Productos utilizados:</span>
                                 <span class="fw-bold" id="precio_productos">$0.00</span>
                             </div>
                             <hr class="border-white">
+                            <!-- Total de la cotización (servicio + productos) -->
                             <div class="d-flex justify-content-between">
                                 <span class="h5">TOTAL:</span>
                                 <span class="h4 fw-bold" id="precio_total">${{ servicio.costo|floatformat:2 }}</span>
                             </div>
                         </div>
                         <div class="col-md-4 d-flex align-items-center justify-content-center">
+                            <!-- Botón para enviar el formulario y crear la cotización -->
                             <button type="submit" class="btn btn-cotizar w-100">
                                 <i class="bi bi-credit-card"></i> Generar Cotización
                             </button>
@@ -111,14 +149,35 @@
             </form>
         </div>
 
-        <!-- Toasts para mensajes -->
+        <!-- ============ NOTIFICACIONES TOAST ============ -->
+        <!-- Contenedor para mensajes de éxito/error -->
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
             {% if messages %}
                 {% for message in messages %}
+                <!-- Toast dinámico con clase según tipo de mensaje -->
+                <!-- message.tags: success, error, warning, info -->
                 <div class="toast align-items-center text-bg-{{ message.tags|default:'info' }} border-0 mb-2 show" role="alert">
                     <div class="d-flex">
                         <div class="toast-body">{{ message }}</div>
                         <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ============ SCRIPTS ============ -->
+    <!-- Bootstrap JS: Framework para componentes interactivos -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript personalizado: Gestión de productos, cálculos automáticos, validaciones -->
+    <script src="{% static 'JavaScript/cotizar.js' %}"></script>
+
+    <!-- Bootstrap Icons: Librería de iconos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</body>
+</html>                 <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
                     </div>
                 </div>
                 {% endfor %}

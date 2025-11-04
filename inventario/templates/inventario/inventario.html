@@ -1,11 +1,32 @@
-<!DOCTYPE html>
-<html lang="es">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario</title>
+<!--
+    PLANTILLA: inventario.html
+    PROPÓSITO: Vista principal del módulo de inventario
+    
+    FUNCIONALIDADES:
+    - Listado de productos con tabla responsiva
+    - Búsqueda de productos por nombre
+    - Modales para agregar, editar y eliminar productos
+    - Selección de filas para operaciones CRUD
+    - Mensajes toast para feedback al usuario
+    
+    <div class="container mt-3">
+        
+        <!-- ============ ENCABEZADO CON LOGO ============ -->
+        <div class="header-bar mb-3">
+            <h2>Inventario</h2>
+            <!-- Logo de la empresa desde Cloudinary -->
+            <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/PNG__FTransparente_CH_cxwjlv" alt="Logo" class="logo" width="80">
+        </div>
+
+        <!-- ============ BARRA DE BÚSQUEDA ============ -->
+        <!-- Formulario GET para filtrar productos por nombre -->
+        <form method="GET" class="mb-3 d-flex">
+            <input type="text" name="buscar" value="{{ buscar }}" class="form-control me-2" placeholder="Buscar artículo...">
+            <button type="submit" class="btn btn-light">Buscar</button>
+        </form>ntario</title>
+    <!-- Framework Bootstrap para estilos responsivos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos personalizados del módulo inventario -->
     <link href="{% static 'css/inventario.css' %}" rel="stylesheet">
 </head>
 <body>
@@ -19,13 +40,11 @@
         <!-- Barra de búsqueda -->
         <form method="GET" class="mb-3 d-flex">
             <input type="text" name="buscar" value="{{ buscar }}" class="form-control me-2" placeholder="Buscar artículo...">
-            <button type="submit" class="btn btn-light">Buscar</button>
-        </form>
-
         <div class="row">
+            <!-- ============ TABLA DE PRODUCTOS (Columna principal) ============ -->
             <div class="col-md-9">
-                <!-- Tabla Inventario -->
                 <div class="container-inventario">
+                    <!-- Tabla responsiva con estilos Bootstrap -->
                     <table class="table table-striped table-hover">
                         <thead class="table-dark">
                             <tr>
@@ -37,110 +56,153 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Iteración sobre la lista de productos -->
                             {% for producto in productos %}
                             <tr>
                                 <td>{{ producto.id }}</td>
                                 <td>{{ producto.nombre }}</td>
+                                <!-- Descripción truncada con tooltip completo -->
+                                <!-- data-full: almacena descripción completa para JS -->
+                                <!-- title: muestra descripción al pasar el mouse -->
                                 <td class="descripcion-celda text-truncate" style="max-width:240px;" title="{{ producto.descripcion }}" data-full="{{ producto.descripcion|escape }}">{{ producto.descripcion|default:''|truncatechars:60 }}</td>
                                 <td>${{ producto.precio }}</td>
                                 <td>{{ producto.cantidad_stock }}</td>
                             </tr>
+                            <!-- Si no hay productos, mostrar mensaje -->
                             {% empty %}
                             <tr>
                                 <td colspan="5" class="text-center">No hay artículos en el inventario.</td>
                             </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Botones de acción -->
-                        <div class="col-md-3 d-flex flex-column">
-                                <button class="btn btn-success btn-action" data-bs-toggle="modal" data-bs-target="#modalAgregar">Agregar nuevo</button>
-                                <button id="btnEditarSeleccion" class="btn btn-warning btn-action" disabled data-bs-toggle="modal" data-bs-target="#modalEditar">Editar seleccionado</button>
-                                <button id="btnEliminarSeleccion" class="btn btn-danger btn-action" disabled data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar seleccionado</button>
-                                <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-action mt-2">Volver</a>
-                        </div>
-                </div>
-
-                <!-- Toasts -->
-                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-                        {% if messages %}
-                                {% for message in messages %}
-                                <div class="toast align-items-center text-bg-success border-0 mb-2 show" role="alert" aria-live="assertive" aria-atomic="true">
-                                        <div class="d-flex">
-                                                <div class="toast-body">{{ message }}</div>
-                                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                                        </div>
-                                </div>
-                                {% endfor %}
-                        {% endif %}
-                </div>
-
-                <!-- Modales -->
-                <!-- Agregar -->
-                <div class="modal fade" id="modalAgregar" tabindex="-1" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content modal-enhanced">
-                      <div class="modal-header">
-                        <h5 class="modal-title d-flex align-items-center"><span class="icon-badge">➕</span>Nuevo Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <form id="formAgregar" method="post" action="{% url 'agregar_producto' %}" novalidate>
-                        {% csrf_token %}
-                        <div class="modal-body">
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <div class="section-title">Datos básicos</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label required-asterisk">Nombre</label>
-                                    {{ form_agregar.nombre }}
-                                    <div class="field-help">Nombre comercial del producto.</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label required-asterisk">Precio</label>
-                                    {{ form_agregar.precio }}
-                                    <div class="field-help">Formato: 0.00</div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="divider"></div>
-                                    <div class="section-title">Inventario</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label required-asterisk">Cantidad en stock</label>
-                                    {{ form_agregar.cantidad_stock }}
-                                    <div class="field-help">Unidades disponibles.</div>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Descripción</label>
-                                    {{ form_agregar.descripcion }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer d-flex justify-content-between">
-                          <div class="text-muted small"><span class="text-danger">*</span> Campos obligatorios</div>
-                          <div>
-                            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-success">Guardar</button>
-                          </div>
-                        </div>
-                      </form>
+            <!-- ============ PANEL DE ACCIONES (Columna lateral) ============ -->
+            <div class="col-md-3 d-flex flex-column">
+                <!-- Botón siempre activo para agregar productos -->
+                <button class="btn btn-success btn-action" data-bs-toggle="modal" data-bs-target="#modalAgregar">Agregar nuevo</button>
+                
+                <!-- Botón editar: se activa solo cuando se selecciona una fila -->
+                <button id="btnEditarSeleccion" class="btn btn-warning btn-action" disabled data-bs-toggle="modal" data-bs-target="#modalEditar">Editar seleccionado</button>
+                
+                <!-- Botón eliminar: se activa solo cuando se selecciona una fila -->
+        <!-- ============ NOTIFICACIONES TOAST ============ -->
+        <!-- Contenedor fijo en la esquina inferior derecha -->
+        <!-- z-index alto para que se muestre sobre otros elementos -->
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+            {% if messages %}
+                {% for message in messages %}
+                <!-- Toast de Bootstrap para mostrar mensajes de éxito/error -->
+                <!-- show: hace que el toast aparezca inmediatamente -->
+                <div class="toast align-items-center text-bg-success border-0 mb-2 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">{{ message }}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
+                </div>
+        <!-- ============ MODALES ============ -->
+        
+        <!-- ============ MODAL: AGREGAR PRODUCTO ============ -->
+        <!-- Modal de Bootstrap para agregar nuevos productos -->
+        <div class="modal fade" id="modalAgregar" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content modal-enhanced">
+              <div class="modal-header">
+                <h5 class="modal-title d-flex align-items-center"><span class="icon-badge">➕</span>Nuevo Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <!-- Sección: Datos básicos -->
+                        <div class="col-12">
+                            <div class="section-title">Datos básicos</div>
+                        </div>
+                        
+                        <!-- Campo: Nombre del producto (obligatorio) -->
+                        <div class="col-sm-6">
+                            <label class="form-label required-asterisk">Nombre</label>
+                            {{ form_agregar.nombre }}
+                            <div class="field-help">Nombre comercial del producto.</div>
+                        </div>
+                        
+                        <!-- Campo: Precio (obligatorio, formato decimal) -->
+                        <div class="col-sm-6">
+                            <label class="form-label required-asterisk">Precio</label>
+                            {{ form_agregar.precio }}
+                            <div class="field-help">Formato: 0.00</div>
+                        </div>
+                        
+                        <!-- Divisor visual entre secciones -->
+                        <div class="col-12">
+                            <div class="divider"></div>
+                            <div class="section-title">Inventario</div>
+                        </div>
+                        
+                        <!-- Campo: Cantidad en stock (obligatorio, solo positivos) -->
+                        <div class="col-sm-6">
+                            <label class="form-label required-asterisk">Cantidad en stock</label>
+                <!-- Footer del modal con indicador de campos obligatorios -->
+                <div class="modal-footer d-flex justify-content-between">
+                  <div class="text-muted small"><span class="text-danger">*</span> Campos obligatorios</div>
+                  <div>
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                   </div>
                 </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
-                <!-- Editar -->
-                <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content" id="editarContent">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Editar Producto</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form id="formEditar" method="post">
-                                {% csrf_token %}
+        <!-- ============ MODAL: EDITAR PRODUCTO ============ -->
+        <!-- Modal que se llena dinámicamente con JavaScript cuando se selecciona un producto -->
+        <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="editarContent">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="formEditar" method="post">
+                        {% csrf_token %}
+                        <!-- El contenido se carga dinámicamente al seleccionar un producto -->
+                        <div class="modal-body" id="editarBody">
+                            <p class="text-muted">Selecciona un producto primero.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <!-- Botón deshabilitado hasta que se seleccione un producto -->
+                            <button type="submit" class="btn btn-warning" disabled id="btnGuardarEditar">Guardar cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ MODAL: ELIMINAR PRODUCTO ============ -->
+        <!-- Modal de confirmación antes de eliminar un producto -->
+        <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="formEliminar" method="post">
+                        {% csrf_token %}
+                        <!-- El contenido se carga dinámicamente al seleccionar un producto -->
+                        <div class="modal-body" id="eliminarBody">
+                            <p class="text-muted">Selecciona un producto primero.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+    </div>
+</div>
+
+    <!-- ============ SCRIPTS ============ -->
+    <!-- Bootstrap JS: Framework para componentes interactivos (modales, toasts, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript personalizado: Maneja la selección de filas, carga dinámica de modales -->
+    <script src="{% static 'JavaScript/inventario.js' %}"></script>
+</body>
+</html>                         {% csrf_token %}
                                 <div class="modal-body" id="editarBody">
                                     <p class="text-muted">Selecciona un producto primero.</p>
                                 </div>

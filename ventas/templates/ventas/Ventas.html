@@ -1,46 +1,113 @@
+<!--
+    PÁGINA PRINCIPAL DEL MÓDULO DE VENTAS
+    
+    Página de selección de opciones para el módulo de ventas.
+    
+    PROPÓSITO:
+    - Punto de entrada al módulo de ventas
+    - Ofrece dos opciones principales:
+      1. Cobrar productos (Punto de Venta / POS)
+      2. Cobrar servicios (Servicios de reparación completados)
+-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas - TodoLaptops</title>
+    
+    <!-- Bootstrap CSS desde CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- CSS personalizado -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/Ventas.css' %}">
 </head>
 <body>
     <div class="container">
+        <!-- ========== BOTÓN DE REGRESO ========== -->
+        <!-- Flecha para volver al dashboard principal -->
         <a href="{% url 'dashboard' %}" class="btn-back">&larr; Regresar</a>
+        
+        <!-- ========== LOGO DE LA EMPRESA ========== -->
+        <!-- Imagen desde Cloudinary -->
         <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/PNG__FTransparente_CH_cxwjlv" alt="Logo" class="logo-top" width="120">
         
+        <!-- ========== TÍTULO PRINCIPAL ========== -->
         <h1 class="titulo-principal">Módulo de Ventas</h1>
         
+        <!-- ========== OPCIONES DE VENTAS ========== -->
         <div class="row justify-content-center g-4">
+            
+            <!-- ===== OPCIÓN 1: COBRAR PRODUCTOS ===== -->
             <div class="col-md-5">
+                <!-- 
+                    Card clickeable que redirige al punto de venta
+                    data-url: URL guardada para navegación con JavaScript
+                -->
                 <div class="opcion text-center opcion-link" data-url="{% url 'ventas_cobrar_productos' %}">
-                    <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/vecteezy_online-shopping-objects-package-checking-illustration-3d_14058996_udipxm" alt="Cobrar productos">
+                    <!-- Imagen ilustrativa de productos/inventario -->
+                    <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/vecteezy_online-shopping-objects-package-checking-illustration-3d_14058996_udipxm" 
+                         alt="Cobrar productos">
+                    
+                    <!-- Título de la opción -->
                     <h4>Cobrar productos</h4>
+                    
+                    <!-- Descripción breve -->
                     <p>Registra la venta de productos del inventario</p>
                 </div>
             </div>
+            
+            <!-- ===== OPCIÓN 2: COBRAR SERVICIOS ===== -->
             <div class="col-md-5">
+                <!-- 
+                    Card clickeable que redirige a cobro de servicios
+                    data-url: URL guardada para navegación con JavaScript
+                -->
                 <div class="opcion text-center opcion-link" data-url="{% url 'ventas_cobrar_servicios' %}">
-                    <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/9727444_q4mmuv" alt="Cobrar servicios">
+                    <!-- Imagen ilustrativa de servicios/reparaciones -->
+                    <img src="https://res.cloudinary.com/dt8ulsehy/image/upload/9727444_q4mmuv" 
+                         alt="Cobrar servicios">
+                    
+                    <!-- Título de la opción -->
                     <h4>Cobrar servicios</h4>
+                    
+                    <!-- Descripción breve -->
                     <p>Cobra servicios de reparación completados</p>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Bootstrap JavaScript desde CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- ========== JAVASCRIPT PARA NAVEGACIÓN ========== -->
     <script>
-        // Manejar clicks en las opciones de navegación
+        /**
+         * Manejo de clicks en las opciones de navegación.
+         * 
+         * Hace que las cards sean clickeables completas (no solo enlaces),
+         * mejorando la experiencia de usuario al tener un área de click más grande.
+         * 
+         * FUNCIONAMIENTO:
+         * 1. Espera a que el DOM esté completamente cargado
+         * 2. Selecciona todos los elementos con clase 'opcion-link'
+         * 3. Agrega event listener de click a cada uno
+         * 4. Al hacer click, extrae la URL del atributo data-url
+         * 5. Redirige a la URL correspondiente
+         */
         document.addEventListener('DOMContentLoaded', function() {
+            // Seleccionar todas las cards de opciones
             const opciones = document.querySelectorAll('.opcion-link');
+            
+            // Agregar event listener a cada card
             opciones.forEach(opcion => {
                 opcion.addEventListener('click', function() {
+                    // Obtener la URL del atributo data-url
                     const url = this.dataset.url;
+                    
+                    // Si existe la URL, redirigir
                     if (url) {
                         window.location.href = url;
                     }
